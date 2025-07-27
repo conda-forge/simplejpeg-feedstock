@@ -19,7 +19,7 @@ build:
       then: |
         copy %RECIPE_DIR%\setup.py .
         python -m pip install . -vv
-  number: 0
+  number: 1
 
 requirements:
   build:
