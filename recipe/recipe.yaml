@@ -30,6 +30,12 @@ requirements:
     - cmake
     - if: unix
       then: make
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+        - numpy
+        - cython
   host:
     - python
     - cython
