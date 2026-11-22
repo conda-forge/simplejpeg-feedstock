@@ -34,18 +34,18 @@ requirements:
       then:
         - python
         - cross-python_${{ target_platform }}
-        - numpy
-        - cython
+        - numpy >=2.0.0
+        - cython >=3.0
   host:
     - python
-    - cython
+    - cython >=3.0
     - pip
-    - numpy
-    - setuptools >=74.1.1
+    - numpy >=2.0.0
+    - setuptools >=77.0.0
     - libjpeg-turbo
   run:
     - python
-    - numpy >=1.19.3
+    - numpy >=2.0.0
 
 tests:
   - python:
