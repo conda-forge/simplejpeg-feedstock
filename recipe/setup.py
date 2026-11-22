@@ -26,7 +26,7 @@ except ImportError:
 
 PACKAGE_DIR = pt.abspath(pt.dirname(__file__))
 OS = platform.system().lower()
-NPY_API_VERSION = 'NPY_1_19_API_VERSION'
+NPY_API_VERSION = 'NPY_2_0_API_VERSION'
 
 def make_jpeg_module():
     include_dirs = [
