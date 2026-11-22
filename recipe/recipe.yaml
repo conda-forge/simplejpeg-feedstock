@@ -28,6 +28,7 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
     - cmake
+    - yasm
     - if: unix
       then: make
     - if: build_platform != target_platform
