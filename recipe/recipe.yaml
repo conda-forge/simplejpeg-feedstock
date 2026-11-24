@@ -1,5 +1,5 @@
 context:
-  version: "1.9.0"
+  version: "1.10.1"
 
 package:
   name: simplejpeg
@@ -7,51 +7,44 @@ package:
 
 source:
   url: https://pypi.org/packages/source/s/simplejpeg/simplejpeg-${{ version }}.tar.gz
-  sha256: 5ac7d9489eeb812c2e7ea5c283994a29d9fefdfe5ed7b86c09d485e0dd366689
+  sha256: c8086ea3350263dff48d0494e6cb007ea2aedfb9249494d25d100c210c447ade
 
 build:
+  number: 0
   script:
-    - if: unix
-      then: |
-        cp ${RECIPE_DIR}/setup.py .
-        python -m pip install . -vv
-    - if: win
-      then: |
-        copy %RECIPE_DIR%\setup.py .
-        python -m pip install . -vv
-  number: 1
+    env:
+      # link against conda-forge's libjpeg-turbo instead of building the vendored copy
+      SIMPLEJPEG_DYNAMIC_LINKING: "1"
+    content: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
     - ${{ compiler('c') }}
-    # Unclear why CXX is needed for a C extension but simplejpeg wants it
-    - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
-    - cmake
-    - if: unix
-      then: make
     - if: build_platform != target_platform
       then:
         - python
         - cross-python_${{ target_platform }}
         - numpy
-        - cython
+        - cython >=3.0
   host:
     - python
-    - cython
+    - cython >=3.0
     - pip
     - numpy
-    - setuptools >=74.1.1
+    - setuptools >=77.0.0
     - libjpeg-turbo
   run:
     - python
-    - numpy >=1.19.3
+    - numpy
 
 tests:
   - python:
       imports:
         - simplejpeg
       pip_check: true
+  - script:
+      - python -c "import numpy as np, simplejpeg; a = np.zeros((16, 16, 3), np.uint8); assert simplejpeg.decode_jpeg(simplejpeg.encode_jpeg(a)).shape == a.shape"
 
 about:
   homepage: https://github.com/jfolz/simplejpeg
